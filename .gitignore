@@ -1,6 +1,6 @@
 # Solo se versiona el sitio; briefs, capturas y material de referencia quedan locales
 /*
-!/site/
+!/docs/
 !/.gitignore
 !/README.md
 .DS_Store
