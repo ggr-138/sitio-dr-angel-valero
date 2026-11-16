@@ -473,3 +473,10 @@ a.c-card:hover{border-color:var(--blue-light);transform:translateY(-3px)}
 .hours-status.closed{color:#8a4b00;background:#fdf0dc}
 .hours-status[hidden]{display:none}
 @media (max-width:767px){.reviews-badge{width:100%}}
+
+/* v4 — casos reales de antes y después */
+.ba-grid-2{grid-template-columns:repeat(2,1fr);max-width:920px}
+.ba[hidden]{display:none}
+.ba-stage .ba-img{background-size:cover;background-position:center 35%}
+@media (max-width:767px){.ba-grid-2{grid-template-columns:1fr}}
+.ba-grid-2:has(> .ba[hidden]){grid-template-columns:minmax(0,460px)}

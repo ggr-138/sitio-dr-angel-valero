@@ -45,6 +45,7 @@
     <ul class="nav-links">
       <li><a href="#rinoplastia">Rinoplastia <span class="sq"></span></a></li>
       <li><a href="#servicios">Servicios <span class="sq"></span></a></li>
+      <li><a href="#resultados">Resultados <span class="sq"></span></a></li>
       <li><a href="#doctor">Doctor <span class="sq"></span></a></li>
       <li><a href="#preguntas">Preguntas <span class="sq"></span></a></li>
       <li><a href="#contacto">Contacto <span class="sq"></span></a></li>
@@ -61,6 +62,7 @@
 <div class="mobile-menu" id="mobile-menu" hidden>
   <a href="#rinoplastia">Rinoplastia</a>
   <a href="#servicios">Servicios</a>
+  <a href="#resultados">Antes y después</a>
   <a href="#doctor">Doctor</a>
   <a href="#preguntas">Preguntas frecuentes</a>
   <a href="#contacto">Contacto y ubicación</a>
@@ -74,8 +76,9 @@
   <a href="#inicio" class="active" aria-label="Inicio"></a>
   <a href="#rinoplastia" aria-label="Rinoplastia"></a>
   <a href="#servicios" aria-label="Servicios"></a>
-  <a href="#proceso" aria-label="Proceso"></a>
+  <a href="#resultados" aria-label="Antes y después"></a>
   <a href="#doctor" aria-label="Doctor"></a>
+  <a href="#proceso" aria-label="Proceso"></a>
   <a href="#preguntas" aria-label="Preguntas frecuentes"></a>
   <a href="#contacto" aria-label="Contacto"></a>
 </nav>
@@ -201,7 +204,7 @@
 </section>
 
 <!-- ================= ANTES Y DESPUÉS ================= -->
-<section class="light results" id="resultados" hidden data-num="04" data-label="RESULTADOS">
+<section class="light results" id="resultados" data-num="04" data-label="RESULTADOS">
   <div class="grid-floor light-floor" aria-hidden="true"></div>
   <div class="wrap">
     <div class="section-head reveal">
@@ -209,59 +212,33 @@
       <h2>Resultados reales,<br>sin retoque</h2>
       <p class="text-muted">Desliza para comparar. Todos los casos se publican con autorización firmada del paciente y con las mismas condiciones de fotografía.</p>
     </div>
-    <div class="ba-grid">
-      <!-- Para cada caso: coloca las fotos en assets/casos/ y cambia data-before / data-after -->
-      <figure class="ba reveal" data-before="" data-after="">
-        <div class="ba-stage">
-          <div class="ba-img ba-after"><span class="ba-ph">Foto después</span></div>
-          <div class="ba-img ba-before"><span class="ba-ph">Foto antes</span></div>
+    <div class="ba-grid ba-grid-2">
+      <!-- Para agregar un caso: copia un <figure>, coloca las fotos en assets/casos/ y cambia data-before / data-after -->
+      <figure class="ba reveal" data-before="assets/casos/caso1-antes.jpg" data-after="assets/casos/caso1-despues.jpg">
+        <div class="ba-stage" role="img" aria-label="Perfil de una paciente antes y después de una rinoplastia">
+          <div class="ba-img ba-after"></div>
+          <div class="ba-img ba-before"></div>
           <div class="ba-handle" aria-hidden="true"><span></span></div>
           <span class="ba-tag ba-tag-l">Antes</span><span class="ba-tag ba-tag-r">Después</span>
           <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después, caso 1">
         </div>
-        <figcaption>Caso 1 · Rinoplastia estética y funcional</figcaption>
+        <figcaption>Caso 1 · Rinoplastia, vista de perfil</figcaption>
       </figure>
-      <figure class="ba reveal" data-before="" data-after="">
-        <div class="ba-stage">
-          <div class="ba-img ba-after"><span class="ba-ph">Foto después</span></div>
-          <div class="ba-img ba-before"><span class="ba-ph">Foto antes</span></div>
+      <figure class="ba reveal" data-before="" data-after="assets/casos/caso2-despues.jpg" hidden>
+        <div class="ba-stage" role="img" aria-label="Vista de frente de una paciente antes y después de una rinoplastia">
+          <div class="ba-img ba-after"></div>
+          <div class="ba-img ba-before"></div>
           <div class="ba-handle" aria-hidden="true"><span></span></div>
           <span class="ba-tag ba-tag-l">Antes</span><span class="ba-tag ba-tag-r">Después</span>
           <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después, caso 2">
         </div>
-        <figcaption>Caso 2 · Corrección de dorso nasal</figcaption>
-      </figure>
-      <figure class="ba reveal" data-before="" data-after="">
-        <div class="ba-stage">
-          <div class="ba-img ba-after"><span class="ba-ph">Foto después</span></div>
-          <div class="ba-img ba-before"><span class="ba-ph">Foto antes</span></div>
-          <div class="ba-handle" aria-hidden="true"><span></span></div>
-          <span class="ba-tag ba-tag-l">Antes</span><span class="ba-tag ba-tag-r">Después</span>
-          <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después, caso 3">
-        </div>
-        <figcaption>Caso 3 · Refinamiento de punta</figcaption>
+        <figcaption>Caso 2 · Rinoplastia, vista de frente</figcaption>
       </figure>
     </div>
-    <p class="fine reveal">Los resultados varían en cada paciente. Las imágenes son ilustrativas y no garantizan un resultado igual.</p>
+    <p class="fine reveal">Fotografías reales de pacientes, publicadas con su autorización y sin retoque. Los resultados varían en cada paciente.</p>
   </div>
 </section>
 
-<!-- ================= PROCESO ================= -->
-<section class="light process" id="proceso" data-num="04" data-label="PROCESO">
-  <div class="grid-floor light-floor" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="tags"><span class="chip chip-blue">04</span><span class="chip chip-dark">TU PROCESO</span></div>
-      <h2>De la valoración<br>a tu recuperación</h2>
-    </div>
-    <ol class="steps">
-      <li class="step reveal"><span class="step-n">01</span><h3>Cita</h3><p>Normalmente hay de 2 a 3 semanas de espera, según la agenda. Reserva en Doctoralia o por WhatsApp.</p></li>
-      <li class="step reveal"><span class="step-n">02</span><h3>Valoración</h3><p>Revisión por fuera y por dentro con endoscopia, fotografías de perfil y simulación de los cambios en tiempo real.</p></li>
-      <li class="step reveal"><span class="step-n">03</span><h3>Cirugía</h3><p>En quirófano de hospital, con anestesia general. Dura en promedio 2 horas y no se usan taponamientos nasales.</p></li>
-      <li class="step reveal"><span class="step-n">04</span><h3>Recuperación</h3><p>Instrucciones de cuidado por escrito y revisiones a los 8 días, 15 días y un mes.</p></li>
-    </ol>
-  </div>
-</section>
 
 <!-- ================= DOCTOR ================= -->
 <section class="dark doctor" id="doctor" data-num="05" data-label="DOCTOR">
@@ -289,6 +266,23 @@
         <a class="btn btn-primary btn-sm" href="https://www.doctoralia.com.mx/perfil/angel-gerardo-gonzalez-valero" target="_blank" rel="noopener">Ver perfil en Doctoralia</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ================= PROCESO ================= -->
+<section class="light process" id="proceso" data-num="06" data-label="PROCESO">
+  <div class="grid-floor light-floor" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="tags"><span class="chip chip-blue">06</span><span class="chip chip-dark">TU PROCESO</span></div>
+      <h2>De la valoración<br>a tu recuperación</h2>
+    </div>
+    <ol class="steps">
+      <li class="step reveal"><span class="step-n">01</span><h3>Cita</h3><p>Normalmente hay de 2 a 3 semanas de espera, según la agenda. Reserva en Doctoralia o por WhatsApp.</p></li>
+      <li class="step reveal"><span class="step-n">02</span><h3>Valoración</h3><p>Revisión por fuera y por dentro con endoscopia, fotografías de perfil y simulación de los cambios en tiempo real.</p></li>
+      <li class="step reveal"><span class="step-n">03</span><h3>Cirugía</h3><p>En quirófano de hospital, con anestesia general. Dura en promedio 2 horas y no se usan taponamientos nasales.</p></li>
+      <li class="step reveal"><span class="step-n">04</span><h3>Recuperación</h3><p>Instrucciones de cuidado por escrito y revisiones a los 8 días, 15 días y un mes.</p></li>
+    </ol>
   </div>
 </section>
 
@@ -335,10 +329,10 @@
 </section>
 
 <!-- ================= FAQ ================= -->
-<section class="light faq" id="preguntas" data-num="06" data-label="PREGUNTAS">
+<section class="light faq" id="preguntas" data-num="07" data-label="PREGUNTAS">
   <div class="wrap faq-inner">
     <div class="section-head reveal">
-      <div class="tags"><span class="chip chip-blue">06</span><span class="chip chip-dark">PREGUNTAS FRECUENTES</span></div>
+      <div class="tags"><span class="chip chip-blue">07</span><span class="chip chip-dark">PREGUNTAS FRECUENTES</span></div>
       <h2>Resolvemos<br>tus dudas</h2>
       <p class="text-muted">¿No encuentras tu pregunta? Escríbenos por WhatsApp y te respondemos en horario de consulta.</p>
       <div class="hours">
@@ -398,7 +392,7 @@
 </section>
 
 <!-- ================= CONTACTO ================= -->
-<section class="hero dark contact" id="contacto" data-num="07" data-label="CONTACTO">
+<section class="hero dark contact" id="contacto" data-num="08" data-label="CONTACTO">
   <div class="grid-floor" aria-hidden="true"></div>
   <div class="plus-field" aria-hidden="true"></div>
   <div class="glow" aria-hidden="true"></div>
