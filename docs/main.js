@@ -146,4 +146,135 @@
     status.classList.add(open ? 'open' : 'closed');
     status.hidden = false;
   }
+
+  // ---------- v5 ----------
+  const DOCTORALIA = 'https://www.doctoralia.com.mx/perfil/angel-gerardo-gonzalez-valero';
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // Contadores que suben al aparecer
+  const counters = document.querySelectorAll('.count[data-to]');
+  const cIO = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      cIO.unobserve(en.target);
+      const el = en.target, to = parseInt(el.dataset.to, 10);
+      if (reduce) { el.textContent = to; return; }
+      const t0 = performance.now(), dur = 1400;
+      const tick = (t) => {
+        const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(to * e);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      el.textContent = '0';
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.6 });
+  counters.forEach((c) => cIO.observe(c));
+
+  // Retrato del doctor: aparece desde abajo y se desplaza suave con el scroll
+  const photo = document.getElementById('profilePhoto');
+  if (photo) {
+    new IntersectionObserver(([en], obs) => { if (en.isIntersecting) { photo.classList.add('in'); obs.disconnect(); } }, { threshold: 0.2 }).observe(photo);
+    // Respaldo: si el navegador limita las animaciones, se revisa la posición al deslizar
+    const reveal = () => { if (!photo.classList.contains('in') && photo.getBoundingClientRect().top < innerHeight * 0.85) photo.classList.add('in'); };
+    addEventListener('scroll', reveal, { passive: true });
+    reveal();
+    if (!reduce) {
+      const pImg = photo.querySelector('img');
+      let ticking = false;
+      addEventListener('scroll', () => {
+        if (ticking) return; ticking = true;
+        requestAnimationFrame(() => {
+          const r = photo.getBoundingClientRect();
+          const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+          if (photo.classList.contains('in') && Math.abs(p) < 1.5) pImg.style.translate = `0 ${(p * -40).toFixed(1)}px`;
+          ticking = false;
+        });
+      }, { passive: true });
+    }
+  }
+
+  // Cursos y reconocimientos (desde cursos.js)
+  const cursos = Array.isArray(window.CURSOS) ? window.CURSOS : [];
+  const cList = document.getElementById('cursosList');
+  if (cList && cursos.length) {
+    cList.innerHTML = cursos.map((c) => `
+      <li class="${c.premio ? 'premio' : ''}">
+        ${c.foto ? `<img src="${esc(c.foto)}" alt="" loading="lazy">` : '<span></span>'}
+        <div><span class="c-date">${c.premio ? 'Reconocimiento · ' : ''}${esc(c.fecha)}</span><strong>${esc(c.titulo)}</strong><p>${esc(c.sede)}${c.tema ? '. ' + esc(c.tema) : ''}</p></div>
+      </li>`).join('');
+    cList.hidden = false;
+  }
+
+  // Avisos de opiniones de Doctoralia al deslizar
+  const box = document.getElementById('toasts');
+  const resenas = (Array.isArray(window.RESENAS) ? window.RESENAS : []).filter((r) => r && r.texto);
+  const queue = resenas.length
+    ? resenas.map((r) => ({ ...r, kind: 'review' }))
+    : [{ kind: 'invite' }];
+  let qi = 0, current = null, hideTimer = null;
+  const muted = () => sessionStorage.getItem('toastsOff') === '1';
+  const initials = (n) => String(n || 'P').split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+  const dismiss = (t) => {
+    if (!t) return;
+    clearTimeout(hideTimer);
+    t.classList.add('hide'); t.classList.remove('show');
+    setTimeout(() => t.remove(), 320);
+    if (current === t) current = null;
+  };
+  const showToast = () => {
+    if (!box || muted() || current || qi >= queue.length) return;
+    if (!document.getElementById('mobile-menu').hidden) return;
+    const r = queue[qi++];
+    const dur = r.kind === 'review' ? 9000 : 8000;
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.setAttribute('role', 'status');
+    t.style.setProperty('--t', dur + 'ms');
+    t.innerHTML = r.kind === 'review'
+      ? `<span class="toast-avatar" aria-hidden="true">${esc(initials(r.autor))}</span>
+         <div class="toast-body">
+           <div class="toast-head"><strong>${esc(r.autor || 'Paciente')}</strong><span class="toast-verified">✓ Doctoralia</span></div>
+           <p class="toast-text">“${esc(r.texto)}”</p>
+           <a class="toast-link" href="${DOCTORALIA}#profile-reviews" target="_blank" rel="noopener">${esc([r.motivo, r.fecha].filter(Boolean).join(' · ') || 'Ver más opiniones')}</a>
+         </div>`
+      : `<span class="toast-avatar" aria-hidden="true">390+</span>
+         <div class="toast-body">
+           <div class="toast-head"><strong>Opiniones verificadas</strong></div>
+           <p class="toast-text">Más de 390 pacientes ya compartieron su experiencia con el doctor en Doctoralia.</p>
+           <a class="toast-link" href="${DOCTORALIA}#profile-reviews" target="_blank" rel="noopener">Leer opiniones</a>
+         </div>`;
+    t.insertAdjacentHTML('beforeend', '<button class="toast-close" type="button" aria-label="Cerrar aviso y no mostrar más">×</button><span class="toast-progress" aria-hidden="true"><i></i></span>');
+    t.querySelector('.toast-close').addEventListener('click', () => { sessionStorage.setItem('toastsOff', '1'); dismiss(t); });
+    let left = dur, started = Date.now();
+    const arm = () => { started = Date.now(); hideTimer = setTimeout(() => dismiss(t), left); };
+    t.addEventListener('mouseenter', () => { clearTimeout(hideTimer); left -= Date.now() - started; });
+    t.addEventListener('mouseleave', arm);
+    box.appendChild(t);
+    current = t;
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+    arm();
+  };
+  if (box) {
+    // Se muestra un aviso cada vez que el lector avanza un tramo de la página (después del inicio)
+    const steps = [0.14, 0.27, 0.4, 0.53, 0.66, 0.79, 0.9];
+    let nextStep = 0;
+    addEventListener('scroll', () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const p = max > 0 ? scrollY / max : 0;
+      while (nextStep < steps.length && p >= steps[nextStep]) { nextStep++; showToast(); }
+    }, { passive: true });
+  }
+
+  // Respaldo general para las apariciones al deslizar (por si el navegador limita las animaciones)
+  let lastCheck = 0;
+  const revealFallback = () => {
+    const now = Date.now(); if (now - lastCheck < 150) return; lastCheck = now;
+    document.querySelectorAll('.reveal:not(.in)').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < innerHeight * 0.9 && r.bottom > 0) el.classList.add('in');
+    });
+  };
+  addEventListener('scroll', revealFallback, { passive: true });
+  revealFallback();
 })();
