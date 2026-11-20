@@ -12,6 +12,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Roboto+Condensed:wght@300;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script>
+  /* Intro: se muestra una vez por visita, y nunca con "reducir movimiento" */
+  (function(){try{var r=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!r && !sessionStorage.getItem("introVista")) document.documentElement.classList.add("intro-on");}catch(e){}})();
+</script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"Physician",
@@ -26,6 +31,24 @@
 </script>
 </head>
 <body>
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-grid"></div>
+  <div class="intro-center">
+    <div class="intro-tiles">
+      <img class="it it1" src="assets/logo-nariz.png" alt="" width="120" height="120">
+      <img class="it it2" src="assets/logo-oido.png" alt="" width="120" height="120">
+      <img class="it it3" src="assets/logo-garganta.png" alt="" width="120" height="120">
+    </div>
+    <div class="intro-word">
+      <span class="iw-top">Dr Ángel Gerardo</span>
+      <span class="iw-bottom">González Valero</span>
+      <span class="iw-sub">Otorrinolaringología · San Luis Potosí</span>
+    </div>
+  </div>
+  <div class="intro-cols"><span class="ic ic1"></span><span class="ic ic2"></span><span class="ic ic3"></span></div>
+  <div class="intro-meta"><span class="intro-line"><i></i></span><span class="intro-count" id="introCount">000</span></div>
+  <button class="intro-skip" id="introSkip" type="button">Saltar intro</button>
+</div>
 <a class="skip" href="#main">Saltar al contenido</a>
 
 <!-- ================= NAV ================= -->
@@ -129,11 +152,10 @@
 
 <!-- ================= PERFIL DEL DOCTOR ================= -->
 <section class="profile" id="doctor" data-num="02" data-label="EL DOCTOR">
+  <figure class="profile-photo" id="profilePhoto">
+    <img src="assets/doctor-retrato.jpg" alt="Retrato del Dr. Ángel Gerardo González Valero sentado, con uniforme quirúrgico azul marino" width="598" height="1135" loading="lazy">
+  </figure>
   <div class="wrap profile-inner">
-    <figure class="profile-photo" id="profilePhoto">
-      <img src="assets/doctor-retrato.jpg" alt="Retrato del Dr. Ángel Gerardo González Valero sentado, con uniforme quirúrgico azul marino" width="598" height="1135" loading="lazy">
-      <video class="profile-video" muted loop playsinline preload="none" aria-hidden="true" poster="assets/video/doctor-vivo-poster.jpg" data-src="assets/video/doctor-vivo.mp4"></video>
-    </figure>
     <div class="profile-body">
       <div class="tags reveal"><span class="chip chip-blue">02</span><span class="chip chip-dark">EL DOCTOR</span></div>
       <h2 class="profile-name reveal">Dr. Ángel Gerardo<br><span class="accent">González Valero</span></h2>

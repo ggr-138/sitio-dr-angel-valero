@@ -290,4 +290,47 @@
     // Respaldo por si el navegador limita las animaciones
     addEventListener('scroll', () => lazyVideos.forEach((v) => { const r = v.getBoundingClientRect(); if (r.top < innerHeight + 200 && r.bottom > -200 && v.paused) start(v); }), { passive: true });
   }
+
+  // ---------- Intro animada ----------
+  const intro = document.getElementById('intro');
+  const root = document.documentElement;
+  if (intro && root.classList.contains('intro-on')) {
+    try { sessionStorage.setItem('introVista', '1'); } catch (e) {}
+    const count = document.getElementById('introCount');
+    const line = intro.querySelector('.intro-line i');
+    const timers = [];
+    const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+    const heroReveals = [...document.querySelectorAll('#inicio .reveal')];
+    let done = false;
+    const replayHero = () => heroReveals.forEach((el, i) => {
+      el.classList.remove('in'); void el.offsetWidth;
+      el.style.transitionDelay = (0.25 + i * 0.12) + 's';
+      el.classList.add('in');
+      setTimeout(() => { el.style.transitionDelay = ''; }, 2000);
+    });
+    const finish = () => {
+      if (done) return; done = true;
+      timers.forEach(clearTimeout);
+      root.classList.remove('intro-on');
+      intro.remove();
+    };
+    // Contador 0 → 100 (estilo Trionn)
+    const t0 = Date.now(), total = 2200;
+    const iv = setInterval(() => {
+      const p = Math.min(1, (Date.now() - t0) / total);
+      const e = 1 - Math.pow(1 - p, 2);
+      count.textContent = String(Math.round(e * 100)).padStart(3, '0');
+      line.style.transform = `scaleX(${e})`;
+      if (p >= 1) clearInterval(iv);
+    }, 30);
+    timers.push(iv);
+    intro.classList.add('go');
+    at(2450, () => intro.classList.add('out'));      // el logo crece y se desvanece
+    at(2650, () => intro.classList.add('cover'));    // las 3 columnas de color cubren la pantalla
+    at(3300, () => { intro.classList.add('lift'); replayHero(); }); // se levantan y revelan la página
+    at(4300, finish);
+    const skip = () => { clearInterval(iv); intro.classList.add('out', 'cover'); setTimeout(() => { intro.classList.add('lift'); replayHero(); }, 350); setTimeout(finish, 1300); timers.forEach(clearTimeout); };
+    document.getElementById('introSkip').addEventListener('click', skip, { once: true });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !done) skip(); });
+  }
 })();
