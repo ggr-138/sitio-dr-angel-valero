@@ -277,4 +277,17 @@
   };
   addEventListener('scroll', revealFallback, { passive: true });
   revealFallback();
+
+  // Videos de Higgsfield: se cargan y reproducen solo cuando están a la vista
+  const lazyVideos = [...document.querySelectorAll('video[data-src]')];
+  if (!reduce && lazyVideos.length) {
+    const start = (v) => {
+      if (!v.src) { v.src = v.dataset.src; v.addEventListener('playing', () => v.classList.add('playing'), { once: true }); v.addEventListener('error', () => v.remove(), { once: true }); }
+      v.play().catch(() => {});
+    };
+    const vIO2 = new IntersectionObserver((entries) => entries.forEach((en) => (en.isIntersecting ? start(en.target) : en.target.pause())), { rootMargin: '200px 0px' });
+    lazyVideos.forEach((v) => vIO2.observe(v));
+    // Respaldo por si el navegador limita las animaciones
+    addEventListener('scroll', () => lazyVideos.forEach((v) => { const r = v.getBoundingClientRect(); if (r.top < innerHeight + 200 && r.bottom > -200 && v.paused) start(v); }), { passive: true });
+  }
 })();
